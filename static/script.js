@@ -259,4 +259,205 @@ document.addEventListener('DOMContentLoaded', function() {
         statusDiv.textContent = message;
         statusDiv.className = `playground-status ${type}`;
     }
-}); 
+});
+
+// 添加一个版本号，用于防止缓存问题
+const VERSION = '1.2';
+
+// 添加一个函数，用于给URL添加版本参数
+function addVersionParam(url) {
+    // 如果URL已经有参数，添加&v=VERSION；否则添加?v=VERSION
+    return url.includes('?') ? `${url}&v=${VERSION}` : `${url}?v=${VERSION}`;
+}
+
+// 页面加载完成后执行
+document.addEventListener('DOMContentLoaded', () => {
+    // 检查是否需要强制刷新页面来清除缓存
+    const lastVersion = localStorage.getItem('ttsfm_version');
+    if (lastVersion !== VERSION) {
+        // 存储新版本号
+        localStorage.setItem('ttsfm_version', VERSION);
+        // 如果版本不匹配且不是第一次加载（lastVersion不为null），则强制刷新
+        if (lastVersion) {
+            // 添加时间戳参数强制刷新所有资源
+            window.location.href = addVersionParam(window.location.href);
+            return;
+        }
+    }
+
+    // 初始化队列状态
+    updateQueueStatus();
+    
+    // 设置定时更新队列状态
+    setInterval(updateQueueStatus, 5000);
+    
+    // 绑定表单提交事件
+    const playgroundForm = document.getElementById('playground-submit');
+    if (playgroundForm) {
+        playgroundForm.addEventListener('click', handlePlaygroundSubmit);
+    }
+});
+
+// 更新队列状态
+async function updateQueueStatus() {
+    try {
+        // 加入时间戳以防止缓存
+        const response = await fetch(addVersionParam('/api/queue-size'));
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // 更新DOM
+        document.getElementById('queue-size').textContent = data.queue_size;
+        document.getElementById('max-queue-size').textContent = data.max_queue_size;
+        
+        // 计算队列占用百分比
+        const percentage = (data.queue_size / data.max_queue_size) * 100;
+        document.getElementById('queue-progress-bar').style.width = `${percentage}%`;
+        
+        // 设置状态指示
+        const statusIndicator = document.getElementById('status-indicator');
+        const queueLoadText = document.getElementById('queue-load-text');
+        const progressBar = document.getElementById('queue-progress-bar');
+        
+        // 根据队列大小更新状态
+        if (percentage === 0) {
+            statusIndicator.className = 'status-indicator indicator-low';
+            progressBar.className = 'queue-progress-bar progress-low';
+            queueLoadText.className = 'queue-load-text low-load';
+            
+            // 设置显示文本 - 根据当前语言
+            if (document.documentElement.lang === 'zh') {
+                queueLoadText.textContent = '无负载';
+            } else {
+                queueLoadText.textContent = 'No Load';
+            }
+        } else if (percentage < 50) {
+            statusIndicator.className = 'status-indicator indicator-low';
+            progressBar.className = 'queue-progress-bar progress-low';
+            queueLoadText.className = 'queue-load-text low-load';
+            
+            if (document.documentElement.lang === 'zh') {
+                queueLoadText.textContent = '低负载';
+            } else {
+                queueLoadText.textContent = 'Low Load';
+            }
+        } else if (percentage < 80) {
+            statusIndicator.className = 'status-indicator indicator-medium';
+            progressBar.className = 'queue-progress-bar progress-medium';
+            queueLoadText.className = 'queue-load-text medium-load';
+            
+            if (document.documentElement.lang === 'zh') {
+                queueLoadText.textContent = '中等负载';
+            } else {
+                queueLoadText.textContent = 'Medium Load';
+            }
+        } else {
+            statusIndicator.className = 'status-indicator indicator-high';
+            progressBar.className = 'queue-progress-bar progress-high';
+            queueLoadText.className = 'queue-load-text high-load';
+            
+            if (document.documentElement.lang === 'zh') {
+                queueLoadText.textContent = '高负载';
+            } else {
+                queueLoadText.textContent = 'High Load';
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error updating queue status:', error);
+    }
+}
+
+// 处理操场表单提交
+async function handlePlaygroundSubmit() {
+    // 获取表单数据
+    const text = document.getElementById('playground-text').value.trim();
+    const voice = document.getElementById('playground-voice').value;
+    const instructions = document.getElementById('playground-instructions').value.trim();
+    
+    // 验证文本不为空
+    if (!text) {
+        showPlaygroundStatus('error', document.documentElement.lang === 'zh' ? '请输入要转换的文本' : 'Please enter text to convert');
+        return;
+    }
+    
+    // 显示处理中状态
+    showPlaygroundStatus('loading', document.documentElement.lang === 'zh' ? '生成中...' : 'Generating...');
+    
+    // 禁用提交按钮
+    const submitButton = document.getElementById('playground-submit');
+    submitButton.disabled = true;
+    
+    try {
+        // 准备请求数据
+        const requestData = {
+            input: text,
+            voice: voice
+        };
+        
+        // 如果有指令，则添加
+        if (instructions) {
+            requestData.instructions = instructions;
+        }
+        
+        // 发送请求
+        const response = await fetch('/v1/audio/speech', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        });
+        
+        // 处理响应
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error generating speech');
+        }
+        
+        // 获取音频数据
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        // 创建音频元素
+        const audio = document.createElement('audio');
+        audio.className = 'audio-player';
+        audio.controls = true;
+        audio.autoplay = false;
+        audio.src = audioUrl;
+        
+        // 显示音频元素
+        const audioContainer = document.getElementById('playground-audio');
+        audioContainer.innerHTML = '';
+        audioContainer.appendChild(audio);
+        
+        // 显示成功状态
+        showPlaygroundStatus('success', document.documentElement.lang === 'zh' ? '生成成功！' : 'Generation successful!');
+        
+    } catch (error) {
+        console.error('Error generating speech:', error);
+        showPlaygroundStatus('error', error.message || (document.documentElement.lang === 'zh' ? '生成失败' : 'Generation failed'));
+    } finally {
+        // 恢复提交按钮
+        submitButton.disabled = false;
+    }
+}
+
+// 显示操场状态
+function showPlaygroundStatus(type, message) {
+    const statusElement = document.getElementById('playground-status');
+    statusElement.innerHTML = message;
+    
+    // 设置状态类
+    statusElement.className = 'playground-status';
+    if (type === 'error') {
+        statusElement.classList.add('error');
+    } else if (type === 'success') {
+        statusElement.classList.add('success');
+    } else if (type === 'loading') {
+        statusElement.innerHTML = `<div class="loading-spinner"></div> ${message}`;
+    }
+} 

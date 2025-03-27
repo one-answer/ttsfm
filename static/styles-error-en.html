@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Loading Error - Voice Rubik's Cube</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #3b82f6;
+            margin-top: 0;
+        }
+        .button {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 10px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #2563eb;
+        }
+        .steps {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        .steps li {
+            margin: 10px 0;
+        }
+        .language-selector {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .language-selector a {
+            padding: 5px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .language-selector a.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Style Loading Error</h1>
+        
+        <div class="language-selector">
+            <a href="styles-error.html">中文</a>
+            <a href="styles-error-en.html" class="active">English</a>
+        </div>
+        
+        <p>The Voice Rubik's Cube website was unable to load style files correctly. This is usually caused by browser caching issues.</p>
+        
+        <h2>How to fix it:</h2>
+        
+        <ol class="steps">
+            <li><strong>Clear your browser's cache</strong> - This is the simplest way to resolve this issue.</li>
+            <li><strong>Force refresh the page</strong> - In most browsers, you can press Ctrl+F5 (Windows) or Cmd+Shift+R (Mac) to force refresh the page.</li>
+            <li><strong>Try incognito mode</strong> - Open the website in your browser's incognito/private browsing mode.</li>
+            <li><strong>Try a different browser</strong> - If all else fails, try using a different browser.</li>
+        </ol>
+        
+        <p>If the problem persists, please contact the website administrator for assistance.</p>
+        
+        <a href="/" class="button" onclick="return forceReload()">Force Refresh</a>
+        <a href="index.html" class="button">Back to Home</a>
+    </div>
+    
+    <script>
+        function forceReload() {
+            // Clear local storage cache
+            localStorage.removeItem('ttsfm_version');
+            // Add timestamp parameter to force refresh
+            window.location.href = '/?forceRefresh=' + Date.now();
+            return false;
+        }
+    </script>
+</body>
+</html> 

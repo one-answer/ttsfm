@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice Rubik's Cube</title>
-    <link rel="icon" href="./logo.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./styles.css">
+    <!-- 样式加载错误检测脚本 -->
+    <script>
+    (function() {
+        // 检测样式文件是否正确加载的函数
+        function checkStylesLoaded() {
+            // 如果4秒后仍未检测到主体内容的样式，则重定向到错误页面
+            setTimeout(function() {
+                var mainHeader = document.querySelector('.main-header h1');
+                if (mainHeader && (getComputedStyle(mainHeader).color === 'rgb(51, 51, 51)' || 
+                    getComputedStyle(mainHeader).backgroundColor === 'rgba(0, 0, 0, 0)')) {
+                    window.location.href = 'styles-error-en.html';
+                }
+            }, 4000);
+        }
+        // 页面加载后执行检测
+        window.addEventListener('load', checkStylesLoaded);
+    })();
+    </script>
+    <link rel="icon" href="./logo.svg?v=1.2" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -23,6 +41,10 @@
 
   gtag('config', 'G-3DVW3QNZBQ');
 </script>
+    <!-- Prevent caching issues -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
     <div class="app-container">
@@ -110,6 +132,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="./script.js?v=1.2"></script>
 </body>
 </html>

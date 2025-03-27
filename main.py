@@ -11,6 +11,8 @@ import logging
 import ssl
 import time
 import sys
+import os
+from pathlib import Path
 from typing import Optional
 from aiohttp import TCPConnector, ClientTimeout
 
@@ -23,6 +25,31 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# 记录环境信息，帮助调试
+def log_environment_info():
+    """记录运行环境信息，帮助调试。"""
+    logger.info(f"Python version: {sys.version}")
+    logger.info(f"Current working directory: {os.getcwd()}")
+    
+    # 检查静态文件目录
+    static_paths = [
+        Path.cwd() / 'static',
+        Path(__file__).parent / 'static',
+        Path('/app/static') if os.path.exists('/app') else None
+    ]
+    
+    for path in static_paths:
+        if path and path.exists():
+            logger.info(f"Static directory found at: {path}")
+            # 列出静态目录中的一些关键文件
+            try:
+                files = list(path.glob('*.html')) + list(path.glob('*.css')) + list(path.glob('*.js'))
+                logger.info(f"Static files found: {[f.name for f in files]}")
+            except Exception as e:
+                logger.warning(f"Error listing static files: {e}")
+        elif path:
+            logger.warning(f"Static directory not found at: {path}")
 
 async def create_test_session(verify_ssl: bool = True) -> Optional[aiohttp.ClientSession]:
     """Create a session for testing with optimized settings."""
@@ -60,7 +87,11 @@ async def create_test_session(verify_ssl: bool = True) -> Optional[aiohttp.Clien
 async def main():
     """Main function to start the server."""
     try:
+        # 记录环境信息
+        log_environment_info()
+        
         config = load_config()
+        logger.info(f"Loaded configuration: {config}")
         
         # Test connection mode
         if config.get('test_connection', False):

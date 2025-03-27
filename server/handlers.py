@@ -329,18 +329,56 @@ async def handle_static(request: web.Request) -> web.Response:
         if not file_path:
             file_path = 'index.html'
             
-        # Construct full path - look in static directory
-        full_path = Path(__file__).parent.parent / 'static' / file_path
+        # 日志记录请求的文件
+        logger.debug(f"Static file request: {file_path}")
+            
+        # 构建文件的完整路径 - 支持多种可能的静态文件位置
+        # 首先尝试从当前工作目录查找
+        static_paths = [
+            Path(__file__).parent.parent / 'static' / file_path,  # 相对于handlers.py的上级目录
+            Path('/app/static') / file_path,  # Docker容器中的路径
+            Path.cwd() / 'static' / file_path  # 当前工作目录
+        ]
         
-        # Check if file exists
-        if not full_path.exists():
+        # 尝试所有可能的路径
+        full_path = None
+        for path in static_paths:
+            if path.exists():
+                full_path = path
+                logger.debug(f"Found static file at: {full_path}")
+                break
+                
+        # 如果文件不存在
+        if not full_path:
+            logger.warning(f"Static file not found: {file_path} (tried paths: {[str(p) for p in static_paths]})")
+            
+            # 如果请求的是favicon.ico且不存在，返回204而不是404
+            if file_path == 'favicon.ico':
+                return web.Response(status=204)
+                
+            # 如果是根目录请求但index.html不存在，返回简单消息
+            if file_path == 'index.html':
+                return web.Response(
+                    text="<html><body><h1>服务器正在运行</h1><p>但未找到index.html文件。</p></body></html>",
+                    content_type="text/html"
+                )
+                
             return web.Response(text="Not found", status=404)
             
-        # Read file
+        # 缓存控制 - 防止浏览器缓存CSS和JS文件
+        cache_headers = {}
+        if full_path.suffix in ['.css', '.js']:
+            cache_headers = {
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+            
+        # 读取文件
         with open(full_path, 'rb') as f:
             content = f.read()
             
-        # Determine content type
+        # 确定内容类型
         content_type = {
             '.html': 'text/html',
             '.css': 'text/css',
@@ -349,20 +387,30 @@ async def handle_static(request: web.Request) -> web.Response:
             '.jpg': 'image/jpeg',
             '.gif': 'image/gif',
             '.ico': 'image/x-icon',
-            '.svg': 'image/svg+xml'
+            '.svg': 'image/svg+xml',
+            '.json': 'application/json',
+            '.woff': 'font/woff',
+            '.woff2': 'font/woff2',
+            '.ttf': 'font/ttf',
+            '.eot': 'application/vnd.ms-fontobject'
         }.get(full_path.suffix, 'application/octet-stream')
         
-        # Return response
+        # 返回响应
         return web.Response(
             body=content,
             content_type=content_type,
             headers={
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type"
+                "Access-Control-Allow-Headers": "Content-Type",
+                **cache_headers
             }
         )
         
     except Exception as e:
-        logger.error(f"Error serving static file: {str(e)}")
-        return web.Response(text=str(e), status=500)
+        logger.error(f"Error serving static file: {str(e)}", exc_info=True)
+        return web.Response(
+            text=f"<html><body><h1>Server Error</h1><p>{str(e)}</p></body></html>",
+            content_type="text/html",
+            status=500
+        )
