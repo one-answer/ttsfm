@@ -9,14 +9,33 @@
     (function() {
         // 检测样式文件是否正确加载的函数
         function checkStylesLoaded() {
-            // 如果4秒后仍未检测到主体内容的样式，则重定向到错误页面
+            // 延长检测时间到8秒，给更多时间加载样式
             setTimeout(function() {
-                var mainHeader = document.querySelector('.main-header h1');
-                if (mainHeader && (getComputedStyle(mainHeader).color === 'rgb(51, 51, 51)' || 
-                    getComputedStyle(mainHeader).backgroundColor === 'rgba(0, 0, 0, 0)')) {
-                    window.location.href = 'styles-error-en.html';
+                try {
+                    var mainHeader = document.querySelector('.main-header h1');
+                    // 修改检测条件，只有在明确判断出样式完全没有加载时才跳转
+                    if (mainHeader && 
+                        (getComputedStyle(mainHeader).color === 'rgb(0, 0, 0)' || 
+                         getComputedStyle(mainHeader).color === 'rgb(51, 51, 51)' || 
+                         !getComputedStyle(mainHeader).backgroundImage.includes('gradient'))) {
+                        
+                        console.log("样式未正确加载，准备跳转到错误页面");
+                        console.log("当前标题颜色:", getComputedStyle(mainHeader).color);
+                        console.log("当前背景:", getComputedStyle(mainHeader).backgroundImage);
+                        
+                        // 添加一个确认，避免错误跳转
+                        var wrapperStyle = getComputedStyle(document.querySelector('.content-wrapper'));
+                        if (wrapperStyle.backgroundColor === 'rgba(0, 0, 0, 0)' || 
+                            wrapperStyle.boxShadow === 'none') {
+                            window.location.href = 'styles-error-en.html';
+                        }
+                    } else {
+                        console.log("样式已正确加载");
+                    }
+                } catch (error) {
+                    console.error("样式检测出错:", error);
                 }
-            }, 4000);
+            }, 8000); // 延长到8秒
         }
         // 页面加载后执行检测
         window.addEventListener('load', checkStylesLoaded);
@@ -45,6 +64,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- 加载错误处理脚本 -->
+    <script src="error-handler.js" defer></script>
 </head>
 <body>
     <div class="app-container">
