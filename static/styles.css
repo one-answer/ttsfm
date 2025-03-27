@@ -544,6 +544,24 @@ code[class*="language-"] {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .app-container {
+        padding: 1.5rem;
+    }
+    
+    .content-wrapper {
+        padding: 2rem;
+    }
+    
+    .main-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .status-container {
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 768px) {
     .app-container {
         padding: 1.25rem;
@@ -551,6 +569,8 @@ code[class*="language-"] {
     
     .content-wrapper {
         padding: 1.5rem;
+        margin: 0 -0.5rem;
+        border-radius: 10px;
     }
     
     .main-header {
@@ -571,6 +591,12 @@ code[class*="language-"] {
     
     .playground-container {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .playground-output {
+        min-height: 150px;
     }
     
     .content-section h2 {
@@ -580,16 +606,57 @@ code[class*="language-"] {
     .status-header h3 {
         font-size: 1.25rem;
     }
+    
+    .header-top, .header-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .language-selector {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .github-link {
+        align-self: center;
+    }
+    
+    .disclaimer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .disclaimer-icon {
+        margin-bottom: 0.5rem;
+    }
+    
+    .voice-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    
+    .params-table, .error-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .app-container {
-        padding: 1rem;
+        padding: 1rem 0.75rem;
     }
     
     .content-wrapper {
         padding: 1.25rem;
         border-radius: 8px;
+        box-shadow: var(--shadow);
+    }
+    
+    .main-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.25rem;
     }
     
     .main-header h1 {
@@ -598,10 +665,75 @@ code[class*="language-"] {
     
     .subtitle {
         font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .content-section {
+        margin-bottom: 2.5rem;
     }
     
     .content-section h2 {
         font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .content-section h2::after {
+        width: 40px;
+        height: 3px;
+    }
+    
+    .playground-container {
+        padding: 1.25rem;
+        gap: 1.25rem;
+    }
+    
+    .form-group {
+        gap: 0.375rem;
+    }
+    
+    .form-group textarea, 
+    .form-group select {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .playground-button {
+        padding: 0.75rem 1.25rem;
+    }
+    
+    .playground-output {
+        padding: 1.25rem;
+    }
+    
+    .audio-player {
+        height: 40px;
+    }
+    
+    .voice-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .content-wrapper {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .main-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .content-section h2 {
+        font-size: 1.4rem;
     }
     
     .github-link {
@@ -615,7 +747,7 @@ code[class*="language-"] {
     }
     
     .status-card {
-        padding: 1.25rem;
+        padding: 1.25rem 1rem;
     }
     
     .queue-stats {
@@ -628,6 +760,139 @@ code[class*="language-"] {
     
     .form-group label {
         font-size: 0.95rem;
+    }
+    
+    .playground-container {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .audio-player {
+        height: 36px;
+    }
+    
+    /* 改进小屏幕上的表单控件 */
+    .form-group textarea {
+        min-height: 80px;
+        max-height: 120px;
+    }
+    
+    .form-group textarea#playground-instructions {
+        min-height: 60px;
+    }
+    
+    /* 改进小屏幕上的状态显示 */
+    .stat-label, .stat-value {
+        font-size: 0.9rem;
+    }
+    
+    .queue-progress-container {
+        height: 6px;
+    }
+    
+    .queue-load-text {
+        font-size: 0.85rem;
+    }
+    
+    /* 改进按钮在小屏上的显示 */
+    .playground-button {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* 为超小屏幕添加额外的优化 */
+@media (max-width: 360px) {
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .content-section h2 {
+        font-size: 1.25rem;
+    }
+    
+    .status-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    
+    .playground-status {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+    
+    .language-selector {
+        gap: 0.25rem;
+    }
+    
+    .lang-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* 添加触摸设备的优化 */
+@media (hover: none) {
+    .playground-button:hover,
+    .lang-btn:hover,
+    .github-link:hover,
+    .voice-card:hover {
+        transform: none;
+    }
+    
+    /* 增加触摸友好的点击区域 */
+    .lang-btn,
+    .form-group select,
+    .playground-button {
+        min-height: 44px;
+    }
+    
+    /* 提高小元素的可触摸性 */
+    .status-indicator {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* 针对高DPI屏幕优化细节 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .content-wrapper {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    
+    .queue-progress-container {
+        height: 7px;
+    }
+    
+    /* 优化线条和边框 */
+    .content-section h2::after {
+        height: 3px;
+    }
+}
+
+/* 优化打印样式 */
+@media print {
+    .app-container {
+        padding: 0;
+    }
+    
+    .content-wrapper {
+        box-shadow: none;
+        padding: 0;
+    }
+    
+    .playground-section, 
+    .playground-form button,
+    .language-selector {
+        display: none;
     }
 }
 

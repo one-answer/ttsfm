@@ -21,10 +21,11 @@
         
         .error-container {
             max-width: 800px;
+            width: 100%;
             padding: 40px;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
         
@@ -52,9 +53,10 @@
         .solutions {
             background-color: #f3f4f6;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin: 20px 0;
             text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
         .solutions h2 {
@@ -70,6 +72,11 @@
         
         .solutions li {
             margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .solutions li strong {
+            color: #1f2937;
         }
         
         .button {
@@ -77,17 +84,19 @@
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
             margin-top: 20px;
             display: inline-block;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
         }
         
         .button:hover {
             background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .footer {
@@ -105,12 +114,19 @@
         }
         
         .language-selector a {
-            padding: 5px 15px;
+            padding: 8px 20px;
             border: 1px solid #e5e7eb;
-            border-radius: 4px;
+            border-radius: 6px;
             text-decoration: none;
             color: #333;
             cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .language-selector a:hover {
+            border-color: #2563eb;
+            color: #2563eb;
         }
         
         .language-selector a.active {
@@ -125,6 +141,156 @@
         }
         .lang-content.active {
             display: block;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .error-container {
+                padding: 30px;
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .error-icon {
+                font-size: 70px;
+                margin-bottom: 15px;
+            }
+            
+            .solutions {
+                padding: 15px;
+            }
+            
+            .solutions h2 {
+                font-size: 1.2em;
+            }
+            
+            .solutions li {
+                font-size: 0.95em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .error-container {
+                padding: 25px 20px;
+                border-radius: 8px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .error-icon {
+                font-size: 60px;
+                margin-bottom: 10px;
+            }
+            
+            .error-code {
+                padding: 6px 12px;
+                font-size: 0.9em;
+                margin-bottom: 15px;
+            }
+            
+            .solutions {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+            }
+            
+            .solutions h2 {
+                font-size: 1.1em;
+            }
+            
+            .solutions ul {
+                padding-left: 15px;
+            }
+            
+            .solutions li {
+                margin-bottom: 8px;
+                font-size: 0.9em;
+            }
+            
+            .button {
+                padding: 10px 20px;
+                font-size: 0.95em;
+                width: 100%;
+                box-sizing: border-box;
+                margin-top: 15px;
+            }
+            
+            .footer {
+                margin-top: 25px;
+                font-size: 0.8em;
+            }
+            
+            .language-selector {
+                margin-bottom: 15px;
+                gap: 6px;
+            }
+            
+            .language-selector a {
+                padding: 6px 15px;
+                font-size: 0.9em;
+                flex: 1;
+                text-align: center;
+            }
+            
+            p {
+                font-size: 0.95em;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .error-container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .error-icon {
+                font-size: 50px;
+            }
+            
+            .solutions h2 {
+                font-size: 1em;
+            }
+            
+            .solutions li {
+                font-size: 0.85em;
+            }
+            
+            .footer {
+                font-size: 0.75em;
+            }
+        }
+        
+        /* 针对触摸设备优化 */
+        @media (hover: none) {
+            .button:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .language-selector a {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .button {
+                min-height: 44px;
+            }
         }
     </style>
 </head>
