@@ -348,7 +348,8 @@ async def handle_static(request: web.Request) -> web.Response:
             '.png': 'image/png',
             '.jpg': 'image/jpeg',
             '.gif': 'image/gif',
-            '.ico': 'image/x-icon'
+            '.ico': 'image/x-icon',
+            '.svg': 'image/svg+xml'
         }.get(full_path.suffix, 'application/octet-stream')
         
         # Return response
@@ -364,4 +365,4 @@ async def handle_static(request: web.Request) -> web.Response:
         
     except Exception as e:
         logger.error(f"Error serving static file: {str(e)}")
-        return web.Response(text=str(e), status=500) 
+        return web.Response(text=str(e), status=500)

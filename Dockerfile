@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py .
 COPY server/ server/
 COPY utils/ utils/
+
+# Copy static files with no cache
 COPY static/ static/
 
 # Set default environment variables
@@ -26,4 +28,4 @@ ENV HOST=0.0.0.0 \
 EXPOSE 7000
 
 # Command to run the application
-CMD ["python", "main.py"] 
+CMD ["python", "main.py"]
