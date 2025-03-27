@@ -26,11 +26,27 @@
         errorPages: {
             styleError: {
                 en: 'styles-error-en.html',
-                zh: 'styles-error.html'
+                zh: 'styles-error-en.html'
             },
             accessDenied: {
                 en: 'access-denied-en.html',
-                zh: 'access-denied.html'
+                zh: 'access-denied-en.html'
+            }
+        },
+        
+        // 错误消息翻译
+        errorMessages: {
+            en: {
+                accessDenied: 'Access Denied (403)',
+                accessDeniedDesc: 'You don\'t have permission to access this resource. Please check configuration or contact administrator.',
+                networkError: 'Network Error',
+                networkErrorDesc: 'Unable to connect to the server. Please check your network connection.'
+            },
+            zh: {
+                accessDenied: '访问被拒绝 (403)',
+                accessDeniedDesc: '您当前无权访问此资源。请检查配置或联系管理员。',
+                networkError: '网络错误',
+                networkErrorDesc: '无法连接到服务器。请检查您的网络连接。'
             }
         }
     };
@@ -54,9 +70,23 @@
         }
     }
     
-    // 获取当前语言
+    // 获取当前语言 - 与单一HTML文件架构兼容
     function getCurrentLanguage() {
+        // 首先从全局语言变量获取
+        if (window.currentLang) {
+            return window.currentLang;
+        }
+        // 然后从HTML lang属性获取
         return document.documentElement.lang === 'zh' ? 'zh' : 'en';
+    }
+    
+    // 获取翻译文本
+    function getTranslatedMessage(key) {
+        const lang = getCurrentLanguage();
+        if (CONFIG.errorMessages[lang] && CONFIG.errorMessages[lang][key]) {
+            return CONFIG.errorMessages[lang][key];
+        }
+        return CONFIG.errorMessages.en[key] || key;
     }
     
     // 检查样式是否正确加载
@@ -102,7 +132,9 @@
                     
                     // 重定向到相应的错误页面
                     const lang = getCurrentLanguage();
-                    window.location.href = CONFIG.errorPages.styleError[lang];
+                    // 添加当前语言作为URL参数，以便错误页面也能正确显示语言
+                    const errorUrl = CONFIG.errorPages.styleError[lang] + '?lang=' + lang;
+                    window.location.href = errorUrl;
                 } else {
                     log('样式已正确加载');
                 }
@@ -124,8 +156,11 @@
                     if (response.status === 403) {
                         log('API访问被拒绝 (403)', 'error');
                         
-                        // 创建错误显示
-                        showErrorNotice('访问被拒绝 (403)', '您当前无权访问此资源。请检查配置或联系管理员。');
+                        // 创建错误显示 - 使用当前语言
+                        showErrorNotice(
+                            getTranslatedMessage('accessDenied'),
+                            getTranslatedMessage('accessDeniedDesc')
+                        );
                     }
                 })
                 .catch(error => {
@@ -134,7 +169,10 @@
                     // 检查是否为网络错误
                     if (error.message.includes('Failed to fetch') || 
                         error.message.includes('NetworkError')) {
-                        showErrorNotice('网络错误', '无法连接到服务器。请检查您的网络连接。');
+                        showErrorNotice(
+                            getTranslatedMessage('networkError'),
+                            getTranslatedMessage('networkErrorDesc')
+                        );
                     }
                 });
         }, CONFIG.healthCheckDelay);
@@ -238,6 +276,15 @@
             checkStylesLoaded();
             checkApiAccess();
         });
+        
+        // 监听语言变化 - 与新的单一HTML架构集成
+        if (window.addEventListener) {
+            // 创建一个自定义事件来监听语言变化
+            document.addEventListener('languageChanged', function(e) {
+                log(`语言已更改为: ${e.detail.language}`);
+                // 不需要特别操作，因为getCurrentLanguage()会自动获取最新语言
+            });
+        }
     }
     
     // 启动

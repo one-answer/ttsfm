@@ -95,41 +95,160 @@
             font-size: 0.9em;
             color: #6b7280;
         }
+        
+        .language-selector {
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .language-selector a {
+            padding: 5px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .language-selector a.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        
+        /* 隐藏非当前语言内容 */
+        .lang-content {
+            display: none;
+        }
+        .lang-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="error-container">
         <div class="error-icon">🔒</div>
-        <div class="error-code">Error 403</div>
-        <h1>Access Denied</h1>
-        <p>
-            Sorry, you don't have permission to access this resource. 
-            The server has refused to fulfill your request due to authorization issues.
-        </p>
+        <div class="error-code" id="error-code">Error 403</div>
+        <h1 id="page-title">Access Denied</h1>
         
-        <div class="solutions">
-            <h2>Possible Solutions:</h2>
-            <ul>
-                <li><strong>Docker container permissions:</strong> Make sure the container has the proper permissions to access files.</li>
-                <li><strong>Web server configuration:</strong> Check the nginx or Apache configuration for proper file permissions.</li>
-                <li><strong>File system permissions:</strong> Ensure the static files have read permissions for the web server user.</li>
-                <li><strong>Firewall settings:</strong> Check if your firewall is blocking necessary connections.</li>
-                <li><strong>Clean Docker cache:</strong> Try rebuilding the Docker image after cleaning the cache.</li>
-            </ul>
+        <div class="language-selector">
+            <a onclick="switchLanguage('en')" id="lang-en">English</a>
+            <a onclick="switchLanguage('zh')" id="lang-zh">中文</a>
         </div>
         
-        <p>
-            If you believe this is a server error, please contact the system administrator
-            or try the troubleshooting steps listed in our documentation.
-        </p>
-        
-        <div>
-            <a href="/" class="button">Return to Homepage</a>
+        <!-- 英文内容 -->
+        <div id="content-en" class="lang-content">
+            <p>
+                Sorry, you don't have permission to access this resource. 
+                The server has refused to fulfill your request due to authorization issues.
+            </p>
+            
+            <div class="solutions">
+                <h2>Possible Solutions:</h2>
+                <ul>
+                    <li><strong>Docker container permissions:</strong> Make sure the container has the proper permissions to access files.</li>
+                    <li><strong>Web server configuration:</strong> Check the nginx or Apache configuration for proper file permissions.</li>
+                    <li><strong>File system permissions:</strong> Ensure the static files have read permissions for the web server user.</li>
+                    <li><strong>Firewall settings:</strong> Check if your firewall is blocking necessary connections.</li>
+                    <li><strong>Clean Docker cache:</strong> Try rebuilding the Docker image after cleaning the cache.</li>
+                </ul>
+            </div>
+            
+            <p>
+                If you believe this is a server error, please contact the system administrator
+                or try the troubleshooting steps listed in our documentation.
+            </p>
+            
+            <div>
+                <a href="/?lang=en" class="button">Return to Homepage</a>
+            </div>
+            
+            <div class="footer">
+                TTSFM Error Page - For assistance, consult the TROUBLESHOOTING.md documentation.
+            </div>
         </div>
         
-        <div class="footer">
-            TTSFM Error Page - For assistance, consult the TROUBLESHOOTING.md documentation.
+        <!-- 中文内容 -->
+        <div id="content-zh" class="lang-content">
+            <p>
+                抱歉，您没有权限访问此资源。
+                由于授权问题，服务器拒绝了您的请求。
+            </p>
+            
+            <div class="solutions">
+                <h2>可能的解决方案：</h2>
+                <ul>
+                    <li><strong>Docker容器权限：</strong> 确保容器具有访问文件的适当权限。</li>
+                    <li><strong>Web服务器配置：</strong> 检查nginx或Apache配置中的文件权限设置。</li>
+                    <li><strong>文件系统权限：</strong> 确保静态文件对Web服务器用户具有读取权限。</li>
+                    <li><strong>防火墙设置：</strong> 检查您的防火墙是否阻止了必要的连接。</li>
+                    <li><strong>清理Docker缓存：</strong> 尝试在清理缓存后重新构建Docker镜像。</li>
+                </ul>
+            </div>
+            
+            <p>
+                如果您认为这是服务器错误，请联系系统管理员
+                或尝试我们文档中列出的故障排除步骤。
+            </p>
+            
+            <div>
+                <a href="/?lang=zh" class="button">返回首页</a>
+            </div>
+            
+            <div class="footer">
+                TTSFM 错误页面 - 如需帮助，请参阅 TROUBLESHOOTING.md 文档。
+            </div>
         </div>
     </div>
+    
+    <script>
+        // 获取URL参数中的语言设置
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 从localStorage获取语言设置
+        function getStoredLanguage() {
+            return localStorage.getItem('ttsfm_lang') || 'en';
+        }
+        
+        // 切换语言
+        function switchLanguage(lang) {
+            // 保存语言设置
+            localStorage.setItem('ttsfm_lang', lang);
+            document.documentElement.lang = lang;
+            
+            // 更新标题和错误代码
+            document.getElementById('page-title').textContent = 
+                lang === 'zh' ? '访问被拒绝' : 'Access Denied';
+            document.getElementById('error-code').textContent = 
+                lang === 'zh' ? '错误 403' : 'Error 403';
+            
+            // 更新语言选择器状态
+            document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
+            document.getElementById('lang-zh').className = lang === 'zh' ? 'active' : '';
+            
+            // 更新内容显示
+            document.getElementById('content-en').className = 
+                lang === 'en' ? 'lang-content active' : 'lang-content';
+            document.getElementById('content-zh').className = 
+                lang === 'zh' ? 'lang-content active' : 'lang-content';
+        }
+        
+        // 页面加载时设置初始语言
+        document.addEventListener('DOMContentLoaded', function() {
+            // 优先使用URL参数中的语言设置
+            const langParam = getURLParameter('lang');
+            const lang = (langParam === 'zh' || langParam === 'en') ? 
+                langParam : getStoredLanguage();
+            
+            // 应用语言设置
+            switchLanguage(lang);
+        });
+    </script>
 </body>
 </html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Rubik's Cube</title>
+    <title data-i18n="site-title">Voice Rubik's Cube</title>
     <!-- 样式加载错误检测脚本 -->
     <script>
     (function() {
@@ -52,20 +52,144 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3811349067654166"
             crossorigin="anonymous"></script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3DVW3QNZBQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3DVW3QNZBQ');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3DVW3QNZBQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3DVW3QNZBQ');
+    </script>
     <!-- Prevent caching issues -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <!-- 加载错误处理脚本 -->
     <script src="error-handler.js" defer></script>
+    
+    <!-- 语言切换和翻译功能 -->
+    <script>
+        // 多语言支持
+        const i18n = {
+            en: {
+                "site-title": "Voice Rubik's Cube",
+                "main-title": "Voice Rubik's Cube",
+                "subtitle": "Text-to-Speech API with Multiple Voice Options",
+                "service-status": "Service Status",
+                "queue-status": "Queue Status",
+                "active-requests": "Active Requests:",
+                "maximum-capacity": "Maximum Capacity:",
+                "no-load": "No Load",
+                "try-it-out": "Try It Out",
+                "text-to-convert": "Text to Convert",
+                "text-placeholder": "Enter the text you want to convert to speech...",
+                "voice": "Voice",
+                "instructions": "Instructions (Optional)",
+                "instructions-placeholder": "e.g., Speak in a cheerful and upbeat tone",
+                "generate-speech": "Generate Speech"
+            },
+            zh: {
+                "site-title": "语音魔方",
+                "main-title": "语音魔方",
+                "subtitle": "支持多种语音的文本转语音 API",
+                "service-status": "服务状态",
+                "queue-status": "队列状态",
+                "active-requests": "活动请求:",
+                "maximum-capacity": "最大容量:",
+                "no-load": "无负载",
+                "try-it-out": "立即体验",
+                "text-to-convert": "要转换的文本",
+                "text-placeholder": "输入要转换为语音的文本...",
+                "voice": "语音",
+                "instructions": "指令（可选）",
+                "instructions-placeholder": "例如：用欢快和兴奋的语气说话",
+                "generate-speech": "生成语音"
+            }
+        };
+        
+        // 设置当前语言
+        let currentLang = localStorage.getItem('ttsfm_lang') || 'en';
+        
+        // 切换语言函数
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            localStorage.setItem('ttsfm_lang', lang);
+            
+            // 更新UI文本
+            updateUILanguage();
+            
+            // 更新语言选择器状态
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // 触发页面更新
+            if (typeof updateQueueSize === 'function') {
+                updateQueueSize();
+            }
+            
+            // 触发自定义事件，通知错误处理脚本语言已更改
+            const event = new CustomEvent('languageChanged', {
+                detail: { language: lang }
+            });
+            document.dispatchEvent(event);
+        }
+        
+        // 更新UI文本
+        function updateUILanguage() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (i18n[currentLang][key]) {
+                    // 如果元素是输入框，更新占位符
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = i18n[currentLang][key];
+                    } else {
+                        element.textContent = i18n[currentLang][key];
+                    }
+                }
+            });
+            
+            // 更新页面标题
+            document.title = i18n[currentLang]['site-title'];
+        }
+        
+        // 页面加载时设置语言
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取URL参数中的语言设置
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            
+            // 如果URL中指定了语言，优先使用它
+            if (langParam && (langParam === 'en' || langParam === 'zh')) {
+                currentLang = langParam;
+                localStorage.setItem('ttsfm_lang', langParam);
+            }
+            
+            // 设置页面语言
+            document.documentElement.lang = currentLang;
+            
+            // 应用语言
+            switchLanguage(currentLang);
+            
+            // 为语言按钮添加事件监听器
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    switchLanguage(lang);
+                });
+            });
+            
+            // 使window.currentLang全局可访问，以便错误处理脚本等可以使用
+            window.currentLang = currentLang;
+        });
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -73,55 +197,55 @@
             <!-- Header Section -->
             <header class="main-header">
                 <div class="header-top">
-                    <h1>Voice Rubik's Cube</h1>
+                    <h1 data-i18n="main-title">Voice Rubik's Cube</h1>
                 </div>
-                <p class="subtitle">Text-to-Speech API with Multiple Voice Options</p>
+                <p class="subtitle" data-i18n="subtitle">Text-to-Speech API with Multiple Voice Options</p>
                 <div class="header-bottom">
                     <div class="language-selector">
-                        <button class="lang-btn active" data-lang="en">English</button>
-                        <a href="index_zh.html" class="lang-btn">中文</a>
+                        <button class="lang-btn" data-lang="en">English</button>
+                        <button class="lang-btn" data-lang="zh">中文</button>
                     </div>
                 </div>
             </header>
 
             <!-- Status Section -->
             <section class="content-section status-section">
-                <h2>Service Status</h2>
+                <h2 data-i18n="service-status">Service Status</h2>
                 <div class="status-container">
                     <div class="status-card">
                         <div class="status-header">
-                            <h3>Queue Status</h3>
+                            <h3 data-i18n="queue-status">Queue Status</h3>
                             <div class="status-indicator" id="status-indicator"></div>
                         </div>
                         <div class="queue-stats">
                             <div class="stat-item">
-                                <span class="stat-label">Active Requests:</span>
+                                <span class="stat-label" data-i18n="active-requests">Active Requests:</span>
                                 <span class="stat-value" id="queue-size">0</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label">Maximum Capacity:</span>
+                                <span class="stat-label" data-i18n="maximum-capacity">Maximum Capacity:</span>
                                 <span class="stat-value" id="max-queue-size">-</span>
                             </div>
                         </div>
                         <div class="queue-progress-container">
                             <div class="queue-progress-bar" id="queue-progress-bar"></div>
                         </div>
-                        <div class="queue-load-text" id="queue-load-text">No Load</div>
+                        <div class="queue-load-text" id="queue-load-text" data-i18n="no-load">No Load</div>
                     </div>
                 </div>
             </section>
 
             <!-- Playground Section -->
             <section class="content-section playground-section">
-                <h2>Try It Out</h2>
+                <h2 data-i18n="try-it-out">Try It Out</h2>
                 <div class="playground-container">
                     <div class="playground-form">
                         <div class="form-group">
-                            <label for="playground-text">Text to Convert</label>
-                            <textarea id="playground-text" rows="4" placeholder="Enter the text you want to convert to speech..."></textarea>
+                            <label for="playground-text" data-i18n="text-to-convert">Text to Convert</label>
+                            <textarea id="playground-text" rows="4" data-i18n="text-placeholder" placeholder="Enter the text you want to convert to speech..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="playground-voice">Voice</label>
+                            <label for="playground-voice" data-i18n="voice">Voice</label>
                             <select id="playground-voice">
                                 <option value="alloy">Alloy</option>
                                 <option value="ash">Ash</option>
@@ -137,11 +261,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="playground-instructions">Instructions (Optional)</label>
-                            <textarea id="playground-instructions" rows="2" placeholder="e.g., Speak in a cheerful and upbeat tone"></textarea>
+                            <label for="playground-instructions" data-i18n="instructions">Instructions (Optional)</label>
+                            <textarea id="playground-instructions" rows="2" data-i18n="instructions-placeholder" placeholder="e.g., Speak in a cheerful and upbeat tone"></textarea>
                         </div>
                         <button id="playground-submit" class="playground-button">
-                            <i class="fas fa-play"></i> Generate Speech
+                            <i class="fas fa-play"></i> <span data-i18n="generate-speech">Generate Speech</span>
                         </button>
                     </div>
                     <div class="playground-output">

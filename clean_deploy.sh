@@ -46,10 +46,15 @@ fi
 
 # 3. 更新HTML文件中的版本参数
 for file in ./static/*.html; do
-  sed -i'.bak' "s/styles\.css?v=[0-9\.]\+/styles.css?v=$TIMESTAMP/g" "$file" || true
-  sed -i'.bak' "s/script\.js?v=[0-9\.]\+/script.js?v=$TIMESTAMP/g" "$file" || true
-  sed -i'.bak' "s/logo\.svg?v=[0-9\.]\+/logo.svg?v=$TIMESTAMP/g" "$file" || true
-  sed -i'.bak' "s/error-handler\.js?v=[0-9\.]\+/error-handler.js?v=$TIMESTAMP/g" "$file" || true
+  if [[ -f "$file" ]]; then
+    sed -i'.bak' "s/styles\.css?v=[0-9\.]\+/styles.css?v=$TIMESTAMP/g" "$file" || true
+    sed -i'.bak' "s/script\.js?v=[0-9\.]\+/script.js?v=$TIMESTAMP/g" "$file" || true
+    sed -i'.bak' "s/logo\.svg?v=[0-9\.]\+/logo.svg?v=$TIMESTAMP/g" "$file" || true
+    sed -i'.bak' "s/error-handler\.js?v=[0-9\.]\+/error-handler.js?v=$TIMESTAMP/g" "$file" || true
+    
+    # 输出处理结果
+    echo "  已更新版本标识: $file"
+  fi
 done
 
 # 清理备份文件
