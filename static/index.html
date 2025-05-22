@@ -4,6 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="site-title">Voice Rubik's Cube</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Voice Rubik's Cube - A powerful Text-to-Speech API with multiple voice options. Convert text to natural-sounding speech with various voices and customizable instructions.">
+    <meta name="description" lang="zh" content="语音魔方 - 一个强大的文本转语音API，提供多种语音选项。将文本转换为自然流畅的语音，支持多种声音和可定制的指令。">
+    <meta name="keywords" content="text to speech, TTS, voice conversion, speech synthesis, AI voices, audio generation, voice rubik's cube">
+    <meta name="keywords" lang="zh" content="文本转语音, TTS, 语音转换, 语音合成, AI语音, 音频生成, 语音魔方">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Voice Rubik's Cube">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tts.aolifu.org/">
+
+    <!-- Open Graph Meta Tags for social sharing -->
+    <meta property="og:title" content="Voice Rubik's Cube - Text-to-Speech API">
+    <meta property="og:title" lang="zh" content="语音魔方 - 文本转语音API">
+    <meta property="og:description" content="Convert text to natural-sounding speech with multiple voice options and customizable instructions.">
+    <meta property="og:description" lang="zh" content="将文本转换为自然流畅的语音，支持多种声音和可定制的指令。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tts.aolifu.org/">
+    <meta property="og:image" content="https://tts.aolifu.org/logo.svg">
+    <meta property="og:image:alt" content="Voice Rubik's Cube Logo">
+    <meta property="og:site_name" content="Voice Rubik's Cube">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_CN">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Voice Rubik's Cube - Text-to-Speech API">
+    <meta name="twitter:description" content="Convert text to natural-sounding speech with multiple voice options and customizable instructions.">
+    <meta name="twitter:image" content="https://tts.aolifu.org/logo.svg">
+    <meta name="twitter:image:alt" content="Voice Rubik's Cube Logo">
+
     <!-- 样式加载错误检测脚本 -->
     <script>
     (function() {
@@ -14,18 +46,18 @@
                 try {
                     var mainHeader = document.querySelector('.main-header h1');
                     // 修改检测条件，只有在明确判断出样式完全没有加载时才跳转
-                    if (mainHeader && 
-                        (getComputedStyle(mainHeader).color === 'rgb(0, 0, 0)' || 
-                         getComputedStyle(mainHeader).color === 'rgb(51, 51, 51)' || 
+                    if (mainHeader &&
+                        (getComputedStyle(mainHeader).color === 'rgb(0, 0, 0)' ||
+                         getComputedStyle(mainHeader).color === 'rgb(51, 51, 51)' ||
                          !getComputedStyle(mainHeader).backgroundImage.includes('gradient'))) {
-                        
+
                         console.log("样式未正确加载，准备跳转到错误页面");
                         console.log("当前标题颜色:", getComputedStyle(mainHeader).color);
                         console.log("当前背景:", getComputedStyle(mainHeader).backgroundImage);
-                        
+
                         // 添加一个确认，避免错误跳转
                         var wrapperStyle = getComputedStyle(document.querySelector('.content-wrapper'));
-                        if (wrapperStyle.backgroundColor === 'rgba(0, 0, 0, 0)' || 
+                        if (wrapperStyle.backgroundColor === 'rgba(0, 0, 0, 0)' ||
                             wrapperStyle.boxShadow === 'none') {
                             window.location.href = 'styles-error-en.html';
                         }
@@ -41,7 +73,7 @@
         window.addEventListener('load', checkStylesLoaded);
     })();
     </script>
-    <link rel="icon" href="./logo.svg?v=1.2" type="image/svg+xml">
+    <link rel="icon" href="./logo.svg?v=1.2" type="image/svg+xml" title="Voice Rubik's Cube Logo">
     <link rel="stylesheet" href="./styles.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -65,7 +97,45 @@
     <meta http-equiv="Expires" content="0">
     <!-- 加载错误处理脚本 -->
     <script src="error-handler.js" defer></script>
-    
+
+    <!-- Structured Data for SEO (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Voice Rubik's Cube",
+      "alternateName": "语音魔方",
+      "url": "https://tts.aolifu.org/",
+      "description": "A powerful Text-to-Speech API with multiple voice options. Convert text to natural-sounding speech with various voices and customizable instructions.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": "Multiple voice options, Customizable speech instructions, Real-time text-to-speech conversion",
+      "screenshot": "https://tts.aolifu.org/logo.svg",
+      "softwareVersion": "1.2",
+      "inLanguage": ["en", "zh"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Developers, Content Creators, Educators"
+      },
+      "potentialAction": {
+        "@type": "UseAction",
+        "target": "https://tts.aolifu.org/"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "Voice Rubik's Cube Team",
+        "url": "https://tts.aolifu.org/"
+      },
+      "keywords": "text to speech, TTS, voice conversion, speech synthesis, AI voices, audio generation"
+    }
+    </script>
+
     <!-- 语言切换和翻译功能 -->
     <script>
         // 多语言支持
@@ -105,19 +175,19 @@
                 "generate-speech": "生成语音"
             }
         };
-        
+
         // 设置当前语言
         let currentLang = localStorage.getItem('ttsfm_lang') || 'en';
-        
+
         // 切换语言函数
         function switchLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
             localStorage.setItem('ttsfm_lang', lang);
-            
+
             // 更新UI文本
             updateUILanguage();
-            
+
             // 更新语言选择器状态
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => {
@@ -127,19 +197,19 @@
                     btn.classList.remove('active');
                 }
             });
-            
+
             // 触发页面更新
             if (typeof updateQueueSize === 'function') {
                 updateQueueSize();
             }
-            
+
             // 触发自定义事件，通知错误处理脚本语言已更改
             const event = new CustomEvent('languageChanged', {
                 detail: { language: lang }
             });
             document.dispatchEvent(event);
         }
-        
+
         // 更新UI文本
         function updateUILanguage() {
             const elements = document.querySelectorAll('[data-i18n]');
@@ -154,29 +224,29 @@
                     }
                 }
             });
-            
+
             // 更新页面标题
             document.title = i18n[currentLang]['site-title'];
         }
-        
+
         // 页面加载时设置语言
         document.addEventListener('DOMContentLoaded', function() {
             // 获取URL参数中的语言设置
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
-            
+
             // 如果URL中指定了语言，优先使用它
             if (langParam && (langParam === 'en' || langParam === 'zh')) {
                 currentLang = langParam;
                 localStorage.setItem('ttsfm_lang', langParam);
             }
-            
+
             // 设置页面语言
             document.documentElement.lang = currentLang;
-            
+
             // 应用语言
             switchLanguage(currentLang);
-            
+
             // 为语言按钮添加事件监听器
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => {
@@ -185,7 +255,7 @@
                     switchLanguage(lang);
                 });
             });
-            
+
             // 使window.currentLang全局可访问，以便错误处理脚本等可以使用
             window.currentLang = currentLang;
         });
