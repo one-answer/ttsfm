@@ -97,7 +97,7 @@
             color: white;
             border-color: #3b82f6;
         }
-        
+
         /* 隐藏非当前语言内容 */
         .lang-content {
             display: none;
@@ -105,7 +105,7 @@
         .lang-content.active {
             display: block;
         }
-        
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             body {
@@ -128,7 +128,7 @@
                 justify-content: center;
             }
         }
-        
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -164,7 +164,7 @@
                 font-size: 0.95rem;
             }
         }
-        
+
         @media (max-width: 360px) {
             .container {
                 padding: 15px;
@@ -182,7 +182,7 @@
                 font-size: 0.95rem;
             }
         }
-        
+
         /* 针对触摸设备优化 */
         @media (hover: none) {
             .button:hover {
@@ -199,107 +199,107 @@
 <body>
     <div class="container">
         <h1 id="page-title">Style Loading Error</h1>
-        
+
         <div class="language-selector">
             <a onclick="switchLanguage('en')" id="lang-en">English</a>
             <a onclick="switchLanguage('zh')" id="lang-zh">中文</a>
         </div>
-        
+
         <!-- 英文内容 -->
         <div id="content-en" class="lang-content">
             <p>The Voice Rubik's Cube website was unable to load style files correctly. This is usually caused by browser caching issues.</p>
-            
+
             <h2>How to fix it:</h2>
-            
+
             <ol class="steps">
                 <li><strong>Clear your browser's cache</strong> - This is the simplest way to resolve this issue.</li>
                 <li><strong>Force refresh the page</strong> - In most browsers, you can press Ctrl+F5 (Windows) or Cmd+Shift+R (Mac) to force refresh the page.</li>
                 <li><strong>Try incognito mode</strong> - Open the website in your browser's incognito/private browsing mode.</li>
                 <li><strong>Try a different browser</strong> - If all else fails, try using a different browser.</li>
             </ol>
-            
+
             <p>If the problem persists, please contact the website administrator for assistance.</p>
-            
+
             <a href="/" class="button" onclick="return forceReload()">Force Refresh</a>
             <a href="/?lang=en" class="button">Back to Home</a>
         </div>
-        
+
         <!-- 中文内容 -->
         <div id="content-zh" class="lang-content">
             <p>语音魔方网站无法正确加载样式文件。这通常是由于浏览器缓存问题导致的。</p>
-            
+
             <h2>解决方法：</h2>
-            
+
             <ol class="steps">
                 <li><strong>清除浏览器缓存</strong> - 这是解决此问题的最简单方法。</li>
                 <li><strong>强制刷新页面</strong> - 在大多数浏览器中，可以按 Ctrl+F5（Windows）或 Cmd+Shift+R（Mac）来强制刷新页面。</li>
                 <li><strong>尝试隐身模式</strong> - 在浏览器的隐身/无痕模式下打开网站。</li>
                 <li><strong>尝试不同的浏览器</strong> - 如果以上方法都不起作用，请尝试使用不同的浏览器。</li>
             </ol>
-            
+
             <p>如果问题仍然存在，请联系网站管理员获取帮助。</p>
-            
+
             <a href="/" class="button" onclick="return forceReload()">强制刷新页面</a>
             <a href="/?lang=zh" class="button">返回首页</a>
         </div>
     </div>
-    
+
     <script>
         // 获取URL参数中的语言设置
         function getURLParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
-        
-        // 从localStorage获取语言设置
+
+        // 从localStorage获取语言设置，默认为英文
         function getStoredLanguage() {
-            return localStorage.getItem('ttsfm_lang') || 'en';
+            return 'en';
         }
-        
+
         // 切换语言
         function switchLanguage(lang) {
             // 保存语言设置
             localStorage.setItem('ttsfm_lang', lang);
             document.documentElement.lang = lang;
-            
+
             // 更新标题
-            document.getElementById('page-title').textContent = 
+            document.getElementById('page-title').textContent =
                 lang === 'zh' ? '样式加载错误' : 'Style Loading Error';
-            
+
             // 更新语言选择器状态
             document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
             document.getElementById('lang-zh').className = lang === 'zh' ? 'active' : '';
-            
+
             // 更新内容显示
-            document.getElementById('content-en').className = 
+            document.getElementById('content-en').className =
                 lang === 'en' ? 'lang-content active' : 'lang-content';
-            document.getElementById('content-zh').className = 
+            document.getElementById('content-zh').className =
                 lang === 'zh' ? 'lang-content active' : 'lang-content';
         }
-        
+
         // 页面加载时设置初始语言
         document.addEventListener('DOMContentLoaded', function() {
             // 优先使用URL参数中的语言设置
             const langParam = getURLParameter('lang');
-            const lang = (langParam === 'zh' || langParam === 'en') ? 
+            const lang = (langParam === 'zh' || langParam === 'en') ?
                 langParam : getStoredLanguage();
-            
+
             // 应用语言设置
             switchLanguage(lang);
         });
-        
+
         // 强制刷新
         function forceReload() {
             // 清除本地缓存
             localStorage.removeItem('ttsfm_version');
-            
+
             // 获取当前语言
             const currentLang = document.documentElement.lang || 'en';
-            
+
             // 添加时间戳和语言参数强制刷新
             window.location.href = `/?forceRefresh=${Date.now()}&lang=${currentLang}`;
             return false;
         }
     </script>
 </body>
-</html> 
+</html>

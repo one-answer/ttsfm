@@ -18,7 +18,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .error-container {
             max-width: 800px;
             width: 100%;
@@ -28,18 +28,18 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        
+
         h1 {
             color: #b91c1c;
             margin-top: 0;
             font-size: 2.5em;
         }
-        
+
         .error-icon {
             font-size: 80px;
             margin-bottom: 20px;
         }
-        
+
         .error-code {
             background-color: #fee2e2;
             color: #b91c1c;
@@ -49,7 +49,7 @@
             display: inline-block;
             margin-bottom: 20px;
         }
-        
+
         .solutions {
             background-color: #f3f4f6;
             padding: 20px;
@@ -58,27 +58,27 @@
             text-align: left;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
-        
+
         .solutions h2 {
             margin-top: 0;
             font-size: 1.3em;
             color: #4b5563;
         }
-        
+
         .solutions ul {
             margin-bottom: 0;
             padding-left: 20px;
         }
-        
+
         .solutions li {
             margin-bottom: 10px;
             position: relative;
         }
-        
+
         .solutions li strong {
             color: #1f2937;
         }
-        
+
         .button {
             background-color: #2563eb;
             color: white;
@@ -92,19 +92,19 @@
             display: inline-block;
             transition: all 0.2s ease;
         }
-        
+
         .button:hover {
             background-color: #1d4ed8;
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
+
         .footer {
             margin-top: 40px;
             font-size: 0.9em;
             color: #6b7280;
         }
-        
+
         .language-selector {
             margin-top: 0;
             margin-bottom: 20px;
@@ -112,7 +112,7 @@
             gap: 10px;
             justify-content: center;
         }
-        
+
         .language-selector a {
             padding: 8px 20px;
             border: 1px solid #e5e7eb;
@@ -123,18 +123,18 @@
             transition: all 0.2s ease;
             font-weight: 500;
         }
-        
+
         .language-selector a:hover {
             border-color: #2563eb;
             color: #2563eb;
         }
-        
+
         .language-selector a.active {
             background: #2563eb;
             color: white;
             border-color: #2563eb;
         }
-        
+
         /* 隐藏非当前语言内容 */
         .lang-content {
             display: none;
@@ -142,84 +142,84 @@
         .lang-content.active {
             display: block;
         }
-        
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             body {
                 padding: 15px;
             }
-            
+
             .error-container {
                 padding: 30px;
                 border-radius: 10px;
             }
-            
+
             h1 {
                 font-size: 2.2em;
             }
-            
+
             .error-icon {
                 font-size: 70px;
                 margin-bottom: 15px;
             }
-            
+
             .solutions {
                 padding: 15px;
             }
-            
+
             .solutions h2 {
                 font-size: 1.2em;
             }
-            
+
             .solutions li {
                 font-size: 0.95em;
             }
         }
-        
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
             }
-            
+
             .error-container {
                 padding: 25px 20px;
                 border-radius: 8px;
             }
-            
+
             h1 {
                 font-size: 1.8em;
             }
-            
+
             .error-icon {
                 font-size: 60px;
                 margin-bottom: 10px;
             }
-            
+
             .error-code {
                 padding: 6px 12px;
                 font-size: 0.9em;
                 margin-bottom: 15px;
             }
-            
+
             .solutions {
                 padding: 15px;
                 margin: 15px 0;
                 border-radius: 8px;
             }
-            
+
             .solutions h2 {
                 font-size: 1.1em;
             }
-            
+
             .solutions ul {
                 padding-left: 15px;
             }
-            
+
             .solutions li {
                 margin-bottom: 8px;
                 font-size: 0.9em;
             }
-            
+
             .button {
                 padding: 10px 20px;
                 font-size: 0.95em;
@@ -227,67 +227,67 @@
                 box-sizing: border-box;
                 margin-top: 15px;
             }
-            
+
             .footer {
                 margin-top: 25px;
                 font-size: 0.8em;
             }
-            
+
             .language-selector {
                 margin-bottom: 15px;
                 gap: 6px;
             }
-            
+
             .language-selector a {
                 padding: 6px 15px;
                 font-size: 0.9em;
                 flex: 1;
                 text-align: center;
             }
-            
+
             p {
                 font-size: 0.95em;
             }
         }
-        
+
         @media (max-width: 360px) {
             .error-container {
                 padding: 20px 15px;
             }
-            
+
             h1 {
                 font-size: 1.6em;
             }
-            
+
             .error-icon {
                 font-size: 50px;
             }
-            
+
             .solutions h2 {
                 font-size: 1em;
             }
-            
+
             .solutions li {
                 font-size: 0.85em;
             }
-            
+
             .footer {
                 font-size: 0.75em;
             }
         }
-        
+
         /* 针对触摸设备优化 */
         @media (hover: none) {
             .button:hover {
                 transform: none;
                 box-shadow: none;
             }
-            
+
             .language-selector a {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
-            
+
             .button {
                 min-height: 44px;
             }
@@ -299,19 +299,19 @@
         <div class="error-icon">🔒</div>
         <div class="error-code" id="error-code">Error 403</div>
         <h1 id="page-title">Access Denied</h1>
-        
+
         <div class="language-selector">
             <a onclick="switchLanguage('en')" id="lang-en">English</a>
             <a onclick="switchLanguage('zh')" id="lang-zh">中文</a>
         </div>
-        
+
         <!-- 英文内容 -->
         <div id="content-en" class="lang-content">
             <p>
-                Sorry, you don't have permission to access this resource. 
+                Sorry, you don't have permission to access this resource.
                 The server has refused to fulfill your request due to authorization issues.
             </p>
-            
+
             <div class="solutions">
                 <h2>Possible Solutions:</h2>
                 <ul>
@@ -322,28 +322,28 @@
                     <li><strong>Clean Docker cache:</strong> Try rebuilding the Docker image after cleaning the cache.</li>
                 </ul>
             </div>
-            
+
             <p>
                 If you believe this is a server error, please contact the system administrator
                 or try the troubleshooting steps listed in our documentation.
             </p>
-            
+
             <div>
                 <a href="/?lang=en" class="button">Return to Homepage</a>
             </div>
-            
+
             <div class="footer">
                 TTSFM Error Page - For assistance, consult the TROUBLESHOOTING.md documentation.
             </div>
         </div>
-        
+
         <!-- 中文内容 -->
         <div id="content-zh" class="lang-content">
             <p>
                 抱歉，您没有权限访问此资源。
                 由于授权问题，服务器拒绝了您的请求。
             </p>
-            
+
             <div class="solutions">
                 <h2>可能的解决方案：</h2>
                 <ul>
@@ -354,67 +354,67 @@
                     <li><strong>清理Docker缓存：</strong> 尝试在清理缓存后重新构建Docker镜像。</li>
                 </ul>
             </div>
-            
+
             <p>
                 如果您认为这是服务器错误，请联系系统管理员
                 或尝试我们文档中列出的故障排除步骤。
             </p>
-            
+
             <div>
                 <a href="/?lang=zh" class="button">返回首页</a>
             </div>
-            
+
             <div class="footer">
                 TTSFM 错误页面 - 如需帮助，请参阅 TROUBLESHOOTING.md 文档。
             </div>
         </div>
     </div>
-    
+
     <script>
         // 获取URL参数中的语言设置
         function getURLParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
-        
-        // 从localStorage获取语言设置
+
+        // 从localStorage获取语言设置，默认为英文
         function getStoredLanguage() {
-            return localStorage.getItem('ttsfm_lang') || 'en';
+            return 'en';
         }
-        
+
         // 切换语言
         function switchLanguage(lang) {
             // 保存语言设置
             localStorage.setItem('ttsfm_lang', lang);
             document.documentElement.lang = lang;
-            
+
             // 更新标题和错误代码
-            document.getElementById('page-title').textContent = 
+            document.getElementById('page-title').textContent =
                 lang === 'zh' ? '访问被拒绝' : 'Access Denied';
-            document.getElementById('error-code').textContent = 
+            document.getElementById('error-code').textContent =
                 lang === 'zh' ? '错误 403' : 'Error 403';
-            
+
             // 更新语言选择器状态
             document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
             document.getElementById('lang-zh').className = lang === 'zh' ? 'active' : '';
-            
+
             // 更新内容显示
-            document.getElementById('content-en').className = 
+            document.getElementById('content-en').className =
                 lang === 'en' ? 'lang-content active' : 'lang-content';
-            document.getElementById('content-zh').className = 
+            document.getElementById('content-zh').className =
                 lang === 'zh' ? 'lang-content active' : 'lang-content';
         }
-        
+
         // 页面加载时设置初始语言
         document.addEventListener('DOMContentLoaded', function() {
             // 优先使用URL参数中的语言设置
             const langParam = getURLParameter('lang');
-            const lang = (langParam === 'zh' || langParam === 'en') ? 
+            const lang = (langParam === 'zh' || langParam === 'en') ?
                 langParam : getStoredLanguage();
-            
+
             // 应用语言设置
             switchLanguage(lang);
         });
     </script>
 </body>
-</html> 
+</html>

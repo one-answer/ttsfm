@@ -176,8 +176,8 @@
             }
         };
 
-        // 设置当前语言
-        let currentLang = localStorage.getItem('ttsfm_lang') || 'en';
+        // 设置当前语言为英文
+        let currentLang = 'en';
 
         // 切换语言函数
         function switchLanguage(lang) {
@@ -235,10 +235,14 @@
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
 
-            // 如果URL中指定了语言，优先使用它
-            if (langParam && (langParam === 'en' || langParam === 'zh')) {
-                currentLang = langParam;
-                localStorage.setItem('ttsfm_lang', langParam);
+            // 如果URL中指定了语言，使用它，否则默认使用英文
+            if (langParam && langParam === 'zh') {
+                currentLang = 'zh';
+                localStorage.setItem('ttsfm_lang', 'zh');
+            } else {
+                // 确保默认为英文
+                currentLang = 'en';
+                localStorage.setItem('ttsfm_lang', 'en');
             }
 
             // 设置页面语言
@@ -272,7 +276,7 @@
                 <p class="subtitle" data-i18n="subtitle">Text-to-Speech API with Multiple Voice Options</p>
                 <div class="header-bottom">
                     <div class="language-selector">
-                        <button class="lang-btn" data-lang="en">English</button>
+                        <button class="lang-btn active" data-lang="en">English</button>
                         <button class="lang-btn" data-lang="zh">中文</button>
                     </div>
                 </div>

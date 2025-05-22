@@ -48,9 +48,9 @@ function getTranslation(key) {
     return additionalTranslations.en[key] || key;
 }
 
-// 当声明一个页面暂用的语言变量时，从全局获取而不是重新定义
+// 当声明一个页面暂用的语言变量时，从全局获取而不是重新定义，默认为英文
 function getCurrentLanguage() {
-    return window.currentLang || 'en';
+    return 'en';
 }
 
 function updateProcessingStatus(requestCount) {
@@ -78,20 +78,20 @@ async function updateQueueSize() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        
+
         // Update text values
         document.getElementById('queue-size').textContent = data.queue_size;
         document.getElementById('max-queue-size').textContent = data.max_queue_size;
-        
+
         // Calculate load percentage
         const loadPercentage = (data.queue_size / data.max_queue_size) * 100;
-        
+
         // Update progress bar width
         queueProgressBar.style.width = `${Math.min(loadPercentage, 100)}%`;
-        
+
         // Update status indicators based on load
         updateLoadStatus(loadPercentage);
-        
+
     } catch (error) {
         console.error('Error fetching queue size:', error);
         // Show error state in UI
@@ -109,12 +109,12 @@ async function updateQueueSize() {
 function updateLoadStatus(loadPercentage) {
     // 获取当前语言
     const lang = getCurrentLanguage();
-    
+
     // Remove all existing classes
     statusIndicator.classList.remove('indicator-low', 'indicator-medium', 'indicator-high');
     queueProgressBar.classList.remove('progress-low', 'progress-medium', 'progress-high');
     queueLoadText.classList.remove('low-load', 'medium-load', 'high-load');
-    
+
     // Apply appropriate classes based on load percentage
     if (loadPercentage >= 75) {
         // High load (75-100%)
@@ -147,13 +147,13 @@ updateQueueSize();
 function copyCode(button) {
     const codeBlock = button.closest('.code-block').querySelector('code');
     const text = codeBlock.textContent;
-    
+
     navigator.clipboard.writeText(text).then(() => {
         // Visual feedback
         const originalIcon = button.innerHTML;
         button.innerHTML = '<i class="fas fa-check"></i>';
         button.style.color = '#4CAF50';
-        
+
         // Reset after 2 seconds
         setTimeout(() => {
             button.innerHTML = originalIcon;
@@ -177,12 +177,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const instructionsInput = document.getElementById('playground-instructions');
     const statusDiv = document.getElementById('playground-status');
     const audioDiv = document.getElementById('playground-audio');
-    
+
     // 为提交按钮添加事件监听
     if (submitButton) {
         submitButton.addEventListener('click', handlePlaygroundSubmit);
     }
-    
+
     // 为复制按钮添加事件监听
     const copyButtons = document.querySelectorAll('.copy-button');
     copyButtons.forEach(button => {
@@ -190,10 +190,10 @@ document.addEventListener('DOMContentLoaded', function() {
             copyCode(this);
         });
     });
-    
+
     // 初始更新队列状态
     updateQueueSize();
-    
+
     // 辅助函数显示状态信息
     function showStatus(message, type) {
         if (statusDiv) {
@@ -218,29 +218,29 @@ async function handlePlaygroundSubmit() {
     const statusDiv = document.getElementById('playground-status');
     const audioDiv = document.getElementById('playground-audio');
     const submitButton = document.getElementById('playground-submit');
-    
+
     // 检查输入
     if (!textInput.value.trim()) {
         showPlaygroundStatus('error', getTranslation('empty-text'));
         return;
     }
-    
+
     // 禁用按钮，显示加载状态
     submitButton.disabled = true;
     showPlaygroundStatus('', getTranslation('generating'));
-    
+
     // 准备API请求数据
     const requestData = {
         model: "tts-1",
         voice: voiceSelect.value,
         input: textInput.value.trim()
     };
-    
+
     // 添加指令如果有的话
     if (instructionsInput.value.trim()) {
         requestData.instructions = instructionsInput.value.trim();
     }
-    
+
     try {
         // 发送API请求
         const response = await fetch(OPENAI_API_URL, {
@@ -250,18 +250,18 @@ async function handlePlaygroundSubmit() {
             },
             body: JSON.stringify(requestData)
         });
-        
+
         // 处理响应
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         // 获取音频blob
         const audioBlob = await response.blob();
-        
+
         // 创建音频URL
         const audioUrl = URL.createObjectURL(audioBlob);
-        
+
         // 显示音频播放器
         audioDiv.innerHTML = `
             <audio controls autoplay class="audio-player">
@@ -272,10 +272,10 @@ async function handlePlaygroundSubmit() {
                 <i class="fas fa-download"></i> Download
             </a>
         `;
-        
+
         // 显示成功状态
         showPlaygroundStatus('success', getTranslation('success'));
-        
+
     } catch (error) {
         console.error('Error generating speech:', error);
         showPlaygroundStatus('error', getTranslation('network-error'));
@@ -292,4 +292,4 @@ function showPlaygroundStatus(type, message) {
         statusDiv.textContent = message;
         statusDiv.className = 'playground-status ' + (type || '');
     }
-} 
+}
